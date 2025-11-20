@@ -3,6 +3,9 @@ plugins {
     alias(libs.plugins.kotlin.android)
 }
 
+// Apply publishing configuration
+apply(from = "${rootProject.projectDir}/gradle/publish-module.gradle")
+
 android {
     namespace = "com.pdm.kvstore"
     compileSdk = 36

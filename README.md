@@ -3,6 +3,8 @@
 [![Android](https://img.shields.io/badge/Platform-Android-green.svg)](https://developer.android.com)
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.2.21-blue.svg)](https://kotlinlang.org)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.pablin202/kvstore.svg?label=Maven%20Central)](https://search.maven.org/artifact/io.github.pablin202/kvstore)
+[![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21)
 
 An efficient and secure key-value storage library for Android, designed with Kotlin Coroutines and modern architecture.
 
@@ -20,6 +22,37 @@ An efficient and secure key-value storage library for Android, designed with Kot
 
 ### Installation
 
+Add to your module's `build.gradle.kts`:
+
+```kotlin
+dependencies {
+    implementation("io.github.pablin202:kvstore:1.0.0")
+}
+```
+
+<details>
+<summary>Alternative: Using version catalog (recommended)</summary>
+
+In `gradle/libs.versions.toml`:
+```toml
+[versions]
+kvstore = "1.0.0"
+
+[libraries]
+kvstore = { module = "io.github.pablin202:kvstore", version.ref = "kvstore" }
+```
+
+In your module's `build.gradle.kts`:
+```kotlin
+dependencies {
+    implementation(libs.kvstore)
+}
+```
+</details>
+
+<details>
+<summary>Alternative: Local module (for development)</summary>
+
 ```gradle
 // settings.gradle.kts
 include(":kvstore")
@@ -29,6 +62,7 @@ dependencies {
     implementation(project(":kvstore"))
 }
 ```
+</details>
 
 ### Basic Usage
 
@@ -210,6 +244,7 @@ Approximate measurements on modern device:
 - [📱 Demo App Guide](app/README.md) - Demo application guide
 - [💡 Usage Examples](USAGE_EXAMPLES.md) - Complete use cases
 - [🧪 Benchmarks](kvstore/src/test/kotlin/benchmarks/README.md) - Benchmark guide
+- [📦 Publishing Guide](PUBLISHING.md) - How to publish to Maven Central
 
 ## 🛠️ Requirements
 
@@ -220,7 +255,11 @@ Approximate measurements on modern device:
 
 ## 📄 License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🚀 Publishing
+
+This library is published to Maven Central. For maintainers wanting to publish a new version, see [PUBLISHING.md](PUBLISHING.md) for complete instructions.
 
 ## 🤝 Contributing
 

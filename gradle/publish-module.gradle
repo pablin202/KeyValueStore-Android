@@ -1,0 +1,91 @@
+// Publishing configuration for Maven Central
+// Apply this to library modules that should be published
+
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+task androidSourcesJar(type: Jar) {
+    archiveClassifier.set('sources')
+    if (project.plugins.findPlugin("com.android.library")) {
+        from android.sourceSets.main.java.srcDirs
+        from android.sourceSets.main.kotlin.srcDirs
+    }
+}
+
+task javadocJar(type: Jar) {
+    archiveClassifier.set('javadoc')
+}
+
+artifacts {
+    archives androidSourcesJar
+    archives javadocJar
+}
+
+group = PUBLISH_GROUP_ID
+version = PUBLISH_VERSION
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                groupId PUBLISH_GROUP_ID
+                artifactId PUBLISH_ARTIFACT_ID
+                version PUBLISH_VERSION
+
+                // Add AAR, sources, and javadoc
+                if (project.plugins.findPlugin("com.android.library")) {
+                    from components.release
+                }
+
+                artifact androidSourcesJar
+                artifact javadocJar
+
+                pom {
+                    name = PUBLISH_ARTIFACT_ID
+                    description = 'Thread-safe key-value storage library for Android with Kotlin Coroutines support'
+                    url = 'https://github.com/pablin202/KeyValueStore-Android'
+
+                    licenses {
+                        license {
+                            name = 'MIT License'
+                            url = 'https://opensource.org/licenses/MIT'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id = 'pablin202'
+                            name = 'Pablo Molina'
+                            email = 'molinapablod@gmail.com'
+                        }
+                    }
+
+                    scm {
+                        connection = 'scm:git:github.com/pablin202/KeyValueStore-Android.git'
+                        developerConnection = 'scm:git:ssh://github.com/pablin202/KeyValueStore-Android.git'
+                        url = 'https://github.com/pablin202/KeyValueStore-Android/tree/main'
+                    }
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                name = "sonatype"
+
+                def releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+                def snapshotsRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+                url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+
+                credentials {
+                    username ossrhUsername
+                    password ossrhPassword
+                }
+            }
+        }
+    }
+
+    signing {
+        sign publishing.publications
+    }
+}
